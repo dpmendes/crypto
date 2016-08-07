@@ -10,8 +10,8 @@ public class DESDataEncrypterTest {
 
 	public static final byte[] input = "Data to be encrypted".getBytes();
 	public static final byte[] keyBytes = "Encryption key".getBytes();
-	public static final byte[] inputVectorBytes = "Input vector".getBytes();
-	public CipherData cipherData = new CipherData(keyBytes, inputVectorBytes);
+	public static final byte[] initializationVectorBytes = "Input vector".getBytes();
+	public CipherData cipherData = new CipherData(keyBytes, initializationVectorBytes);
 	public static final byte[] expectedEncryptedData = "".getBytes();
 	
 	@Test
