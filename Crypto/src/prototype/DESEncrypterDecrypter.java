@@ -31,7 +31,7 @@ public class DESEncrypterDecrypter {
 			e.printStackTrace();
 		}
 		
-		byte[] encrypted= new byte[cipher.getOutputSize(input.length)];
+		byte[] encrypted = new byte[cipher.getOutputSize(input.length)];
 		int enc_len = 0;
 		try {
 			enc_len = cipher.update(input, 0, input.length, encrypted, 0);

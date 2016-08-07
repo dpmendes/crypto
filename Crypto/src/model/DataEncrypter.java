@@ -1,7 +1,9 @@
 package model;
 
+import javax.crypto.SecretKey;
+
 public interface DataEncrypter {
 
-	byte[] encrypt(byte[] input, CipherData cipherData);
+	String encrypt(String input, SecretKey secretKey);
 	
 }

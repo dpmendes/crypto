@@ -1,11 +1,51 @@
 package model;
 
+import java.security.*;
+import javax.crypto.*;
+
 public class DESDataEncrypter implements DataEncrypter{
 
 	@Override
-	public byte[] encrypt(byte[] input, CipherData cipherData) {
-		// TODO Auto-generated method stub
-		return null;
+	public String encrypt(String input, SecretKey secretKey) {
+		Cipher cipher = null;
+		cipher = getCipherInstanceWithDESEncryptionCBCModePKCS5Padding(cipher);
+		initializeCipherInEncryptionModeWithSecretKey(cipher, secretKey);
+	
+		byte[] inputBytes = input.getBytes();
+		byte[] encryptedBytes = encryptInputBytesUsingCipher(inputBytes, cipher);
+		
+		return new String(encryptedBytes);
+	}
+
+	private Cipher getCipherInstanceWithDESEncryptionCBCModePKCS5Padding(Cipher cipher) {
+		try {
+			cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			e.printStackTrace();
+		}
+		return cipher;
+	}
+
+	private void initializeCipherInEncryptionModeWithSecretKey(Cipher cipher, SecretKey secretKey) {
+		try {
+			cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private byte[] encryptInputBytesUsingCipher(byte[] inputBytes, Cipher cipher) {
+		byte[] encryptionResult = null;
+		try {
+			encryptionResult = cipher.doFinal(inputBytes);
+		} catch (IllegalBlockSizeException e) {
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			e.printStackTrace();
+		}
+		return encryptionResult;
 	}
 
 }

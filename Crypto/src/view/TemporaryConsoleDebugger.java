@@ -1,9 +1,9 @@
 package view;
 
-import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+import java.security.*;
+import java.security.spec.*;
+import javax.crypto.*;
+import javax.crypto.spec.*;
 
 import prototype.DESEncrypterDecrypter;
 
@@ -21,7 +21,33 @@ public class TemporaryConsoleDebugger {
 			e.printStackTrace();
 		}
 		
-		SecretKey secretKey = keyGen.generateKey();
+		SecretKeyFactory secretKeyFactory = null;
+		try {
+			secretKeyFactory = SecretKeyFactory.getInstance("DES");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		
+		byte[] key = {
+			(byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03, 
+			(byte)0x04, (byte)0x05, (byte)0x06, (byte)0x07
+		};
+	
+		KeySpec desKeySpec = null;
+		try {
+			desKeySpec = new DESKeySpec(key);
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		}
+		
+//		SecretKey secretKey = null;
+//		try {
+//			secretKey = secretKeyFactory.generateSecret(desKeySpec);
+//		} catch (InvalidKeySpecException e) {
+//			e.printStackTrace();
+//		}
+		
+		SecretKey secretKey = new SecretKeySpec(key, "DES");
 		
 		encryptedData = DESEncrypterDecrypter.encrypt(input, secretKey);
 		System.out.println("Encrypted data: " + new String(encryptedData));
