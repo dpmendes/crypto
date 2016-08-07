@@ -1,5 +1,6 @@
 package prototype;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
@@ -11,8 +12,10 @@ import javax.crypto.SecretKey;
 import javax.crypto.ShortBufferException;
 
 public class DESEncrypterDecrypter {
-	public static byte[] encryptDecrypt(byte[] input, SecretKey secretKey, byte[] initializationVectorBytes) {
-		Cipher cipher = null;
+	static Cipher cipher = null;
+	
+	public static byte[] encrypt(byte[] input, SecretKey secretKey) {
+		cipher = null;
 		
 		try {
 			cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
@@ -48,4 +51,26 @@ public class DESEncrypterDecrypter {
 		
 		return encrypted;
 	}
+	
+	public static byte[] decrypt(byte[] input, SecretKey secretKey) {
+		try {
+			cipher.init(Cipher.DECRYPT_MODE, secretKey, cipher.getParameters());
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		} catch (InvalidAlgorithmParameterException e) {
+			e.printStackTrace();
+		}
+
+		byte[] decrypted = null;
+		try {
+			decrypted = cipher.doFinal(input);
+		} catch (IllegalBlockSizeException e) {
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			e.printStackTrace();
+		}
+		
+		return decrypted;
+	}
+	
 }

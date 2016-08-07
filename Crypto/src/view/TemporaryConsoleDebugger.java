@@ -11,10 +11,10 @@ public class TemporaryConsoleDebugger {
 
 	public static void main(String[] args) {
 		byte[] encryptedData;
+		byte[] decryptedData;
 		final byte[] input = "Data to be encrypted".getBytes();
-		final byte[] initializationVectorBytes = "Input vector".getBytes();
-		
 		KeyGenerator keyGen = null;
+		
 		try {
 			keyGen = KeyGenerator.getInstance("DES");
 		} catch (NoSuchAlgorithmException e) {
@@ -23,8 +23,11 @@ public class TemporaryConsoleDebugger {
 		
 		SecretKey secretKey = keyGen.generateKey();
 		
-		encryptedData = DESEncrypterDecrypter.encryptDecrypt(input, secretKey, initializationVectorBytes);
-		System.out.println("Encrypted data: " + encryptedData.toString());
+		encryptedData = DESEncrypterDecrypter.encrypt(input, secretKey);
+		System.out.println("Encrypted data: " + new String(encryptedData));
+		
+		decryptedData = DESEncrypterDecrypter.decrypt(encryptedData, secretKey);
+		System.out.println("Decrypted data: " + new String(decryptedData));
 	}
 
 }
