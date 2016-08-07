@@ -13,14 +13,7 @@ public class TemporaryConsoleDebugger {
 		byte[] encryptedData;
 		byte[] decryptedData;
 		final byte[] input = "Data to be encrypted".getBytes();
-		KeyGenerator keyGen = null;
-		
-		try {
-			keyGen = KeyGenerator.getInstance("DES");
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		
+	
 		SecretKeyFactory secretKeyFactory = null;
 		try {
 			secretKeyFactory = SecretKeyFactory.getInstance("DES");
@@ -28,9 +21,9 @@ public class TemporaryConsoleDebugger {
 			e.printStackTrace();
 		}
 		
-		byte[] key = {
-			(byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03, 
-			(byte)0x04, (byte)0x05, (byte)0x06, (byte)0x07
+		byte[] key = new byte[] {
+			(byte)0x10, (byte)0x20, (byte)0x30, (byte)0x40, 
+			(byte)0x50, (byte)0x60, (byte)0x70, (byte)0x80
 		};
 	
 		KeySpec desKeySpec = null;
@@ -40,14 +33,14 @@ public class TemporaryConsoleDebugger {
 			e.printStackTrace();
 		}
 		
-//		SecretKey secretKey = null;
-//		try {
-//			secretKey = secretKeyFactory.generateSecret(desKeySpec);
-//		} catch (InvalidKeySpecException e) {
-//			e.printStackTrace();
-//		}
+		SecretKey secretKey = null;
+		try {
+			secretKey = secretKeyFactory.generateSecret(desKeySpec);
+		} catch (InvalidKeySpecException e) {
+			e.printStackTrace();
+		}
 		
-		SecretKey secretKey = new SecretKeySpec(key, "DES");
+		//SecretKey secretKey = new SecretKeySpec(key, "DES");
 		
 		encryptedData = DESEncrypterDecrypter.encrypt(input, secretKey);
 		System.out.println("Encrypted data: " + new String(encryptedData));

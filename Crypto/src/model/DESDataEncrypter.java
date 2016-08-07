@@ -8,7 +8,7 @@ public class DESDataEncrypter implements DataEncrypter{
 	@Override
 	public String encrypt(String input, SecretKey secretKey) {
 		Cipher cipher = null;
-		cipher = getCipherInstanceWithDESEncryptionCBCModePKCS5Padding(cipher);
+		cipher = getCipherInstanceWithDESEncryption(cipher);
 		initializeCipherInEncryptionModeWithSecretKey(cipher, secretKey);
 	
 		byte[] inputBytes = input.getBytes();
@@ -17,9 +17,9 @@ public class DESDataEncrypter implements DataEncrypter{
 		return new String(encryptedBytes);
 	}
 
-	private Cipher getCipherInstanceWithDESEncryptionCBCModePKCS5Padding(Cipher cipher) {
+	private Cipher getCipherInstanceWithDESEncryption(Cipher cipher) {
 		try {
-			cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
+			cipher = Cipher.getInstance("DES");
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} catch (NoSuchPaddingException e) {

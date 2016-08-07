@@ -1,15 +1,7 @@
 package prototype;
 
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.ShortBufferException;
+import java.security.*;
+import javax.crypto.*;
 
 public class DESEncrypterDecrypter {
 	static Cipher cipher = null;
@@ -18,7 +10,7 @@ public class DESEncrypterDecrypter {
 		cipher = null;
 		
 		try {
-			cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
+			cipher = Cipher.getInstance("DES");
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} catch (NoSuchPaddingException e) {
