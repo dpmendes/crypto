@@ -17,15 +17,31 @@ public class DESDataEncrypterTest {
 			(byte)0x10, (byte)0x20, (byte)0x30, (byte)0x40, 
 			(byte)0x50, (byte)0x60, (byte)0x70, (byte)0x80
 		};
-	public SecretKey secretKey = null;
+	private SecretKey secretKey;
+	private SecretKey invalidDESSecretKey;
+	private DESDataEncrypter dde;
 	
 	@Before
 	public void initialize() {
 		SecretKeyFactory secretKeyFactory = getDESSecretKeyFactoryInstance();
 		KeySpec desKeySpec = createDESKeySpecWithKey();
 		SecretKey secretKey = alwaysCreateSameSecretKey(secretKeyFactory, desKeySpec);
-
+		
 		this.secretKey = secretKey;
+		dde = new DESDataEncrypter();
+		invalidDESSecretKey = generateAESSecretKey();
+	}
+
+	private SecretKey generateAESSecretKey() {
+		KeyGenerator keyGenerator = null;
+		try {
+			keyGenerator = KeyGenerator.getInstance("AES");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			fail("There is no AES Algorithm.");
+		}
+		
+		return keyGenerator.generateKey();
 	}
 
 	private SecretKeyFactory getDESSecretKeyFactoryInstance() {
@@ -62,13 +78,24 @@ public class DESDataEncrypterTest {
 
 	@Test
 	public void encryptMethodShouldEncryptCorrectly() {
-		DESDataEncrypter dde = new DESDataEncrypter();
-		String encryptionResult = dde.encrypt(input, this.secretKey);
+		String encryptionResult = null;
+		try {
+			encryptionResult = dde.encrypt(input, secretKey);
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+			fail("Invalid secret key.");
+		}
 		assertTrue(encryptionResult.equals(expectedEncryptedData));
+	}
+	
+	@Test (expected = InvalidKeyException.class)
+	public void invalidKeyShouldThrowInvalidKeyException() throws InvalidKeyException {
+		dde.encrypt(input, invalidDESSecretKey);
 	}
 	
 	@After
 	public void finalize() {
-		this.secretKey = null;
+		secretKey = null;
+		dde = null;
 	}
 }

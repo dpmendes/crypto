@@ -6,7 +6,7 @@ import javax.crypto.*;
 public class DESDataEncrypter implements DataEncrypter{
 
 	@Override
-	public String encrypt(String input, SecretKey secretKey) {
+	public String encrypt(String input, SecretKey secretKey) throws InvalidKeyException {
 		Cipher cipher = null;
 		cipher = getCipherInstanceWithDESEncryption(cipher);
 		initializeCipherInEncryptionModeWithSecretKey(cipher, secretKey);
@@ -28,11 +28,11 @@ public class DESDataEncrypter implements DataEncrypter{
 		return cipher;
 	}
 
-	private void initializeCipherInEncryptionModeWithSecretKey(Cipher cipher, SecretKey secretKey) {
+	private void initializeCipherInEncryptionModeWithSecretKey(Cipher cipher, SecretKey secretKey) throws InvalidKeyException {
 		try {
 			cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 		} catch (InvalidKeyException e) {
-			e.printStackTrace();
+			throw e;
 		}
 	}
 	
