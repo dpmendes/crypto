@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import java.security.*;
 import javax.crypto.*;
 import model.*;
-import controller.InvalidKeyLengthException;
+import controller.InvalidDESKeyLengthException;
 
 public class DESDataEncrypterTest {
 
@@ -22,13 +22,13 @@ public class DESDataEncrypterTest {
 		try {
 			secretKey = DESKeyGenerator.
 					generateDESKeyFromEightCharactersString(eightCharactersKey);
-		} catch (InvalidKeyLengthException e) {
+		} catch (InvalidDESKeyLengthException e) {
 			e.printStackTrace();
 			fail("Key does not have exactly eight characters.");
 		}
 		
 		this.secretKey = secretKey;
-		dde = new DESDataEncrypter();
+		dde = DESDataEncrypter.getInstance();
 		invalidDESSecretKey = generateAESSecretKey();
 	}
 

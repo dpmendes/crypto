@@ -4,7 +4,7 @@ import java.security.*;
 import java.security.spec.*;
 import javax.crypto.*;
 import javax.crypto.spec.*;
-import controller.InvalidKeyLengthException;
+import controller.InvalidDESKeyLengthException;
 
 public class DESKeyGenerator {
 	public static SecretKey generateRandomDESKey() {
@@ -18,13 +18,14 @@ public class DESKeyGenerator {
 		return keyGenerator.generateKey();
 	}
 	
-	public static SecretKey generateDESKeyFromEightCharactersString(String keyString)
-			throws InvalidKeyLengthException {
+	public static SecretKey generateDESKeyFromEightCharactersString
+	(String keyString) throws InvalidDESKeyLengthException {
 		if(keyString.length() != 8)
-			throw new InvalidKeyLengthException(keyString.length());
+			throw new InvalidDESKeyLengthException(keyString.length());
 		SecretKeyFactory secretKeyFactory = getDESSecretKeyFactoryInstance();
 		KeySpec desKeySpec = createDESKeySpecWithKey(keyString);
-		SecretKey secretKey = alwaysCreateSameSecretKey(secretKeyFactory, desKeySpec);
+		SecretKey secretKey = createSecretKeyUsingFactoryFromKeySpec
+								(secretKeyFactory, desKeySpec);
 		return secretKey;
 	}
 	
@@ -48,7 +49,8 @@ public class DESKeyGenerator {
 		return desKeySpec;
 	}
 
-	private static SecretKey alwaysCreateSameSecretKey(SecretKeyFactory secretKeyFactory, KeySpec desKeySpec) {
+	private static SecretKey createSecretKeyUsingFactoryFromKeySpec
+	(SecretKeyFactory secretKeyFactory, KeySpec desKeySpec) {
 		SecretKey secretKey = null;
 		try {
 			secretKey = secretKeyFactory.generateSecret(desKeySpec);

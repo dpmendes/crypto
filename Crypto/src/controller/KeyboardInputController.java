@@ -2,19 +2,19 @@ package controller;
 
 import java.util.Scanner;
 
-public class DataAndKeyInputController {
-	private static DataAndKeyInputController dataAndKeyInputControllerInstance = null;
+public class KeyboardInputController {
+	private static KeyboardInputController dataAndKeyInputControllerInstance = null;
 	private String dataToBeEncrypted;
 	private String encryptionKey;
 	private Scanner keyboardInputScanner;
 
-	private DataAndKeyInputController() {
+	private KeyboardInputController() {
 		keyboardInputScanner = new Scanner(System.in);
 	}
 	
-	public static DataAndKeyInputController getInstance() {
+	public static KeyboardInputController getInstance() {
 		if(dataAndKeyInputControllerInstance == null)
-			dataAndKeyInputControllerInstance = new DataAndKeyInputController();
+			dataAndKeyInputControllerInstance = new KeyboardInputController();
 		return dataAndKeyInputControllerInstance;
 	}
 	
@@ -23,11 +23,11 @@ public class DataAndKeyInputController {
 		return dataToBeEncrypted;
 	}
 	
-	public String inputDESEightCharactersEncryptionKey() throws InvalidKeyLengthException {
+	public String inputDESEightCharactersEncryptionKey() throws InvalidDESKeyLengthException {
 		encryptionKey = keyboardInputScanner.nextLine();
 		int encryptionKeyLength = encryptionKey.length();
 		if(encryptionKeyLength != 8)
-			throw new InvalidKeyLengthException(encryptionKeyLength);
+			throw new InvalidDESKeyLengthException(encryptionKeyLength);
 		return encryptionKey;
 	}
 		

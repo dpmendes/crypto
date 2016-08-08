@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import javax.crypto.*;
 import org.junit.*;
 
-import controller.InvalidKeyLengthException;
+import controller.InvalidDESKeyLengthException;
 import model.DESKeyGenerator;
 
 public class DESKeyGeneratorTest {
@@ -30,24 +30,24 @@ public class DESKeyGeneratorTest {
 		try {
 			desFixedSecretKey = DESKeyGenerator.
 					generateDESKeyFromEightCharactersString(eightCharactersKey);
-		} catch (InvalidKeyLengthException e) {
+		} catch (InvalidDESKeyLengthException e) {
 			e.printStackTrace();
 		}
 		assertTrue(desFixedSecretKey.toString().equals(fixedKeyDescriptor));
 	}
 	
-	@Test (expected = InvalidKeyLengthException.class)
+	@Test (expected = InvalidDESKeyLengthException.class)
 	public void generateDESKeyFromSevenCharactersKeyShouldThrowException()
-												throws InvalidKeyLengthException {
+												throws InvalidDESKeyLengthException {
 		String sevenCharactersKey = "1234567";
 		@SuppressWarnings("unused")
 		SecretKey desFixedSecretKey = DESKeyGenerator.
 					generateDESKeyFromEightCharactersString(sevenCharactersKey);
 	}
 	
-	@Test (expected = InvalidKeyLengthException.class)
+	@Test (expected = InvalidDESKeyLengthException.class)
 	public void generateDESKeyFromNineCharactersKeyShouldThrowException()
-												throws InvalidKeyLengthException {
+												throws InvalidDESKeyLengthException {
 		String nineCharactersKey = "123456789";
 		@SuppressWarnings("unused")
 		SecretKey desFixedSecretKey = DESKeyGenerator.

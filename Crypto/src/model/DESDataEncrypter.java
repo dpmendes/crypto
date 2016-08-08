@@ -4,7 +4,17 @@ import java.security.*;
 import javax.crypto.*;
 
 public class DESDataEncrypter implements DataEncrypter{
-
+	private static DESDataEncrypter desDataEncrypterInstance = null;
+	
+	private DESDataEncrypter() {
+	}
+	
+	public static DESDataEncrypter getInstance() {
+		if(desDataEncrypterInstance == null)
+			desDataEncrypterInstance = new DESDataEncrypter();
+		return desDataEncrypterInstance;
+	}
+	
 	@Override
 	public String encrypt(String input, SecretKey secretKey) throws InvalidKeyException {
 		Cipher cipher = null;
