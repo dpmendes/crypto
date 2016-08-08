@@ -5,6 +5,7 @@ import java.security.InvalidKeyException;
 import javax.crypto.SecretKey;
 
 import controller.DataAndKeyInputController;
+import controller.InvalidKeyLengthException;
 import model.DESDataEncrypter;
 import model.DESKeyGenerator;
 
@@ -16,7 +17,14 @@ public class TemporaryConsoleDebugger {
 		System.out.println("Type the data to be encrypted: ");
 		String dataToBeEncrypted = dataAndKeyInputController.inputDataToBeEncrypted();
 	
-		SecretKey secretDESKey = DESKeyGenerator.generateRandomDESKey();
+		//SecretKey secretDESKey = DESKeyGenerator.generateRandomDESKey();
+		SecretKey secretDESKey = null;
+		try {
+			secretDESKey = DESKeyGenerator.generateDESKeyFromEightCharactersString("abcdefgh");
+		} catch (InvalidKeyLengthException e1) {
+			e1.printStackTrace();
+		}
+		
 		DESDataEncrypter dde = new DESDataEncrypter();		
 		
 		String encryptedData = null;

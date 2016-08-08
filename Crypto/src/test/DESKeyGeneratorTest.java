@@ -25,15 +25,33 @@ public class DESKeyGeneratorTest {
 	
 	@Test
 	public void generateDESKeyFromEightCharactersStringShouldReturnSameKey() {
-		String eightCharacterKey = "12345678";
+		String eightCharactersKey = "12345678";
 		SecretKey desFixedSecretKey = null;
 		try {
 			desFixedSecretKey = DESKeyGenerator.
-					generateDESKeyFromEightCharactersString(eightCharacterKey);
+					generateDESKeyFromEightCharactersString(eightCharactersKey);
 		} catch (InvalidKeyLengthException e) {
 			e.printStackTrace();
 		}
 		assertTrue(desFixedSecretKey.toString().equals(fixedKeyDescriptor));
+	}
+	
+	@Test (expected = InvalidKeyLengthException.class)
+	public void generateDESKeyFromSevenCharactersKeyShouldThrowException()
+												throws InvalidKeyLengthException {
+		String sevenCharactersKey = "1234567";
+		@SuppressWarnings("unused")
+		SecretKey desFixedSecretKey = DESKeyGenerator.
+					generateDESKeyFromEightCharactersString(sevenCharactersKey);
+	}
+	
+	@Test (expected = InvalidKeyLengthException.class)
+	public void generateDESKeyFromNineCharactersKeyShouldThrowException()
+												throws InvalidKeyLengthException {
+		String nineCharactersKey = "123456789";
+		@SuppressWarnings("unused")
+		SecretKey desFixedSecretKey = DESKeyGenerator.
+					generateDESKeyFromEightCharactersString(nineCharactersKey);
 	}
 	
 }
