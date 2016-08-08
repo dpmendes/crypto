@@ -27,9 +27,7 @@ public class DataAndKeyInputController {
 		encryptionKey = keyboardInputScanner.nextLine();
 		int encryptionKeyLength = encryptionKey.length();
 		if(encryptionKeyLength != 8)
-			throw new InvalidKeyLengthException
-							("The DES encryption key should have 8 characters, not " + 
-							encryptionKeyLength + ".");
+			throw new InvalidKeyLengthException(encryptionKeyLength);
 		return encryptionKey;
 	}
 		

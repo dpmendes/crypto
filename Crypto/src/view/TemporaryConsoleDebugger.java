@@ -16,7 +16,7 @@ public class TemporaryConsoleDebugger {
 		System.out.println("Type the data to be encrypted: ");
 		String dataToBeEncrypted = dataAndKeyInputController.inputDataToBeEncrypted();
 	
-		SecretKey secretDESKey = DESKeyGenerator.generateDESKey();
+		SecretKey secretDESKey = DESKeyGenerator.generateRandomDESKey();
 		DESDataEncrypter dde = new DESDataEncrypter();		
 		
 		String encryptedData = null;

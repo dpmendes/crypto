@@ -11,6 +11,11 @@ public class InvalidKeyLengthException extends Exception {
 	public InvalidKeyLengthException(String message) {
 		this.message = message;
 	}
+	
+	public InvalidKeyLengthException(int invalidKeyLength) {
+		this.message = "The DES encryption key should have 8 characters, not " + 
+						invalidKeyLength + ".";
+	}
 
 	@Override
 	public String getMessage() {
