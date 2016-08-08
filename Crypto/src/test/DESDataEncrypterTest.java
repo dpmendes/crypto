@@ -32,18 +32,6 @@ public class DESDataEncrypterTest {
 		invalidDESSecretKey = generateAESSecretKey();
 	}
 
-	private SecretKey generateAESSecretKey() {
-		KeyGenerator keyGenerator = null;
-		try {
-			keyGenerator = KeyGenerator.getInstance("AES");
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-			fail("There is no AES Algorithm.");
-		}
-		
-		return keyGenerator.generateKey();
-	}
-
 	private SecretKeyFactory getDESSecretKeyFactoryInstance() {
 		SecretKeyFactory secretKeyFactory = null;
 		try {
@@ -65,6 +53,7 @@ public class DESDataEncrypterTest {
 		}
 		return desKeySpec;
 	}
+
 	private SecretKey alwaysCreateSameSecretKey(SecretKeyFactory secretKeyFactory, KeySpec desKeySpec) {
 		SecretKey secretKey = null;
 		try {
@@ -76,6 +65,18 @@ public class DESDataEncrypterTest {
 		return secretKey;
 	}
 
+	private SecretKey generateAESSecretKey() {
+		KeyGenerator keyGenerator = null;
+		try {
+			keyGenerator = KeyGenerator.getInstance("AES");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			fail("There is no AES Algorithm.");
+		}
+		
+		return keyGenerator.generateKey();
+	}
+	
 	@Test
 	public void encryptMethodShouldEncryptCorrectly() {
 		String encryptionResult = null;
@@ -96,6 +97,7 @@ public class DESDataEncrypterTest {
 	@After
 	public void finalize() {
 		secretKey = null;
+		invalidDESSecretKey = null;
 		dde = null;
 	}
 }
