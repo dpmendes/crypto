@@ -9,9 +9,9 @@ import controller.InvalidDESKeyLengthException;
 
 public class DESDataEncrypterTest {
 
-	public static final String input = "Data to be encrypted";
-	public static final String expectedEncryptedData = "2FÈ>0Ghå¢ÚS7À×Š+¢Á‡Ñ";
-	public static final String eightCharactersKey = "abcdefgh";
+	private static final String INPUT_PLAIN_DATA = "Data to be encrypted";
+	private static final String EXPECTED_ENCRYPTED_DATA = "2FÈ>0Ghå¢ÚS7À×Š+¢Á‡Ñ";
+	private static final String EIGHT_CHARACTERS_KEY = "abcdefgh";
 	private SecretKey secretKey;
 	private SecretKey invalidDESSecretKey;
 	private DESDataEncrypter dde;
@@ -21,7 +21,7 @@ public class DESDataEncrypterTest {
 		SecretKey secretKey = null;
 		try {
 			secretKey = DESKeyGenerator.
-					generateDESKeyFromEightCharactersString(eightCharactersKey);
+					generateDESKeyFromEightCharactersString(EIGHT_CHARACTERS_KEY);
 		} catch (InvalidDESKeyLengthException e) {
 			e.printStackTrace();
 			fail("Key does not have exactly eight characters.");
@@ -48,17 +48,17 @@ public class DESDataEncrypterTest {
 	public void encryptMethodShouldEncryptCorrectly() {
 		String encryptionResult = null;
 		try {
-			encryptionResult = dde.encrypt(input, secretKey);
+			encryptionResult = dde.encrypt(INPUT_PLAIN_DATA, secretKey);
 		} catch (InvalidKeyException e) {
 			e.printStackTrace();
 			fail("Invalid secret key.");
 		}
-		assertTrue(encryptionResult.equals(expectedEncryptedData));
+		assertTrue(encryptionResult.equals(EXPECTED_ENCRYPTED_DATA));
 	}
 	
 	@Test (expected = InvalidKeyException.class)
 	public void invalidKeyShouldThrowInvalidKeyException() throws InvalidKeyException {
-		dde.encrypt(input, invalidDESSecretKey);
+		dde.encrypt(INPUT_PLAIN_DATA, invalidDESSecretKey);
 	}
 	
 	@After

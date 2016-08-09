@@ -16,12 +16,12 @@ public class DESDataEncrypter implements DataEncrypter{
 	}
 	
 	@Override
-	public String encrypt(String input, SecretKey secretKey) throws InvalidKeyException {
+	public String encrypt(String plainInput, SecretKey secretKey) throws InvalidKeyException {
 		Cipher cipher = null;
 		cipher = getCipherInstanceWithDESEncryption(cipher);
-		initializeCipherInEncryptionModeWithSecretKey(cipher, secretKey);
+		cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 	
-		byte[] inputBytes = input.getBytes();
+		byte[] inputBytes = plainInput.getBytes();
 		byte[] encryptedBytes = encryptInputBytesUsingCipher(inputBytes, cipher);
 		
 		return new String(encryptedBytes);
@@ -38,14 +38,6 @@ public class DESDataEncrypter implements DataEncrypter{
 		return cipher;
 	}
 
-	private void initializeCipherInEncryptionModeWithSecretKey(Cipher cipher, SecretKey secretKey) throws InvalidKeyException {
-		try {
-			cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-		} catch (InvalidKeyException e) {
-			throw e;
-		}
-	}
-	
 	private byte[] encryptInputBytesUsingCipher(byte[] inputBytes, Cipher cipher) {
 		byte[] encryptionResult = null;
 		try {
