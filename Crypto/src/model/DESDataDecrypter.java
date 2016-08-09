@@ -17,23 +17,22 @@ public class DESDataDecrypter implements DataDecrypter {
 	}
 
 	@Override
-	public String decrypt(String encryptedInput, SecretKey secretKey) throws InvalidKeyException {
+	public byte[] decrypt(byte[] encryptedInputBytes, SecretKey secretKey) throws InvalidKeyException {
 		Cipher cipher = null;
 		cipher = getCipherInstanceWithDESEncryption(cipher);
 		cipher.init(Cipher.DECRYPT_MODE, secretKey);
 		
-		byte[] encryptedBytes = encryptedInput.getBytes();
 		byte[] decryptedDataBytes = null;
 		
 		try {
-			decryptedDataBytes = cipher.doFinal(encryptedBytes);
+			decryptedDataBytes = cipher.doFinal(encryptedInputBytes);
 		} catch (IllegalBlockSizeException e) {
 			e.printStackTrace();
 		} catch (BadPaddingException e) {
 			e.printStackTrace();
 		}
 		
-		return new String(decryptedDataBytes);
+		return decryptedDataBytes;
 	}
 
 	private Cipher getCipherInstanceWithDESEncryption(Cipher cipher) {

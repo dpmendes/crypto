@@ -4,5 +4,5 @@ import java.security.InvalidKeyException;
 import javax.crypto.SecretKey;
 
 public interface DataEncrypter {
-	String encrypt(String plainInput, SecretKey secretKey) throws InvalidKeyException;
+	byte[] encrypt(byte[] plainInputBytes, SecretKey secretKey) throws InvalidKeyException;
 }

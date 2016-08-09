@@ -50,7 +50,8 @@ public class DESDataDecrypterTest {
 	public void decryptMethodShouldDecryptCorrectly() {
 		String decryptionResult = null;
 		try {
-			decryptionResult = ddd.decrypt(INPUT_ENCRYPTED_DATA, secretKey);
+			decryptionResult = new String
+					(ddd.decrypt(INPUT_ENCRYPTED_DATA.getBytes(), secretKey));
 		} catch (InvalidKeyException e) {
 			e.printStackTrace();
 			fail("Invalid secret key.");
@@ -60,7 +61,7 @@ public class DESDataDecrypterTest {
 	
 	@Test (expected = InvalidKeyException.class)
 	public void invalidKeyShouldThrowInvalidKeyException() throws InvalidKeyException {
-		ddd.decrypt(INPUT_ENCRYPTED_DATA, invalidDESSecretKey);
+		ddd.decrypt(INPUT_ENCRYPTED_DATA.getBytes(), invalidDESSecretKey);
 	}
 	
 }

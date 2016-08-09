@@ -48,7 +48,8 @@ public class DESDataEncrypterTest {
 	public void encryptMethodShouldEncryptCorrectly() {
 		String encryptionResult = null;
 		try {
-			encryptionResult = dde.encrypt(INPUT_PLAIN_DATA, secretKey);
+			encryptionResult = new String
+					(dde.encrypt(INPUT_PLAIN_DATA.getBytes(), secretKey));
 		} catch (InvalidKeyException e) {
 			e.printStackTrace();
 			fail("Invalid secret key.");
@@ -58,7 +59,7 @@ public class DESDataEncrypterTest {
 	
 	@Test (expected = InvalidKeyException.class)
 	public void invalidKeyShouldThrowInvalidKeyException() throws InvalidKeyException {
-		dde.encrypt(INPUT_PLAIN_DATA, invalidDESSecretKey);
+		dde.encrypt(INPUT_PLAIN_DATA.getBytes(), invalidDESSecretKey);
 	}
 	
 	@After
