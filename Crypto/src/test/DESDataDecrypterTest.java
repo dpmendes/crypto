@@ -1,16 +1,13 @@
 package test;
 
 import static org.junit.Assert.*;
+import java.security.*;
 
-import java.security.InvalidKeyException;
-
+import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-
 import org.junit.*;
-
 import controller.InvalidDESKeyLengthException;
-import model.DESDataDecrypter;
-import model.DESKeyGenerator;
+import model.*;
 
 public class DESDataDecrypterTest {
 
@@ -33,7 +30,20 @@ public class DESDataDecrypterTest {
 		}
 		
 		this.secretKey = secretKey;
+		invalidDESSecretKey = generateAESSecretKey();
 		ddd = DESDataDecrypter.getInstance();
+	}
+	
+	private SecretKey generateAESSecretKey() {
+		KeyGenerator keyGenerator = null;
+		try {
+			keyGenerator = KeyGenerator.getInstance("AES");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			fail("There is no AES Algorithm.");
+		}
+		
+		return keyGenerator.generateKey();
 	}
 	
 	@Test
@@ -47,4 +57,10 @@ public class DESDataDecrypterTest {
 		}
 		assertTrue(decryptionResult.equals(EXPECTED_PLAIN_DATA));
 	}
+	
+	@Test (expected = InvalidKeyException.class)
+	public void invalidKeyShouldThrowInvalidKeyException() throws InvalidKeyException {
+		ddd.decrypt(INPUT_ENCRYPTED_DATA, invalidDESSecretKey);
+	}
+	
 }
