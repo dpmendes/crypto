@@ -1,16 +1,9 @@
 package view;
 
 import java.security.InvalidKeyException;
-
 import javax.crypto.SecretKey;
-
-import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
-
-import controller.KeyboardInputController;
-import controller.InvalidDESKeyLengthException;
-import model.DESDataDecrypter;
-import model.DESDataEncrypter;
-import model.DESKeyGenerator;
+import controller.*;
+import model.*;
 
 public class TemporaryConsoleDebugger {
 
@@ -19,7 +12,7 @@ public class TemporaryConsoleDebugger {
 				KeyboardInputController.getInstance();
 		
 		System.out.println("Type the data to be encrypted: ");
-		String dataToBeEncrypted = keyboardInputController.inputDataToBeEncrypted();
+		String dataToBeEncrypted = keyboardInputController.inputGenericData();
 
 		String eightCharactersEncryptionKey = "";
 		while(eightCharactersEncryptionKey.length() != 8)
@@ -36,7 +29,14 @@ public class TemporaryConsoleDebugger {
 				encryptDataWithSecretKey(dataToBeEncrypted, secretDESKey);
 		System.out.println("Encrypted data: " + encryptedData);
 		
-		String decryptedData = decryptDataWithSecretKey(encryptedData, secretDESKey);
+		System.out.println("Insert header for encrypted data: ");
+		String header = keyboardInputController.inputGenericData();
+		
+		MongoDBClient dbClient = new MongoDBClient();
+		dbClient.insertEncryptedDataWithHeader(encryptedData, header);
+		
+		String decryptedData = 
+				decryptDataWithSecretKey(encryptedData, secretDESKey);
 		System.out.println("Decrypted data: " + decryptedData);
 	}
 

@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class KeyboardInputController {
 	private static KeyboardInputController dataAndKeyInputControllerInstance = null;
-	private String dataToBeEncrypted;
 	private String encryptionKey;
 	private Scanner keyboardInputScanner;
 
@@ -18,9 +17,8 @@ public class KeyboardInputController {
 		return dataAndKeyInputControllerInstance;
 	}
 	
-	public String inputDataToBeEncrypted() {
-		dataToBeEncrypted = keyboardInputScanner.nextLine();
-		return dataToBeEncrypted;
+	public String inputGenericData() {
+		return keyboardInputScanner.nextLine();
 	}
 	
 	public String inputDESEightCharactersEncryptionKey() throws InvalidDESKeyLengthException {
@@ -29,10 +27,6 @@ public class KeyboardInputController {
 		if(encryptionKeyLength != 8)
 			throw new InvalidDESKeyLengthException(encryptionKeyLength);
 		return encryptionKey;
-	}
-		
-	public String getDataToBeEncrypted() {
-		return dataToBeEncrypted;
 	}
 
 	public String getEncryptionKey() {

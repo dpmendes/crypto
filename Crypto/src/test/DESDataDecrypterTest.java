@@ -2,12 +2,8 @@ package test;
 
 import static org.junit.Assert.*;
 import java.security.*;
-
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+import javax.crypto.*;
 import org.junit.*;
-import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
-
 import controller.InvalidDESKeyLengthException;
 import model.*;
 

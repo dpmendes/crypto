@@ -7,18 +7,29 @@ import org.bson.Document;
 
 public class MongoDBClient {
 
-	private MongoClient mongoClient = null;
-	private MongoDatabase mdb = null;
+	MongoClient mongoClient = null;
 	private MongoCollection<Document> cryptoMongoCollection = null;
 	
 	public MongoDBClient() {
 		mongoClient = new MongoClient();
-		mdb = mongoClient.getDatabase("test");
+		MongoDatabase mdb = mongoClient.getDatabase("test");
 		cryptoMongoCollection = mdb.getCollection("crypto");
 	}
 	
-	public void insertEncryptedDataWithHeader(byte[] encryptedData, String header) {
-		
+	public void insertEncryptedDataWithHeader(String encryptedData, String header) {
+		Document dbEntry = createDocument(encryptedData, header);
+		cryptoMongoCollection.insertOne(dbEntry);
+	}
+	
+	private Document createDocument(String encryptedData, String header) {
+		Document document = new Document();
+		document.append("encrypted data", encryptedData);
+		document.append("header", header);
+		return document;
+	}
+
+	public void finalize() {
+		mongoClient.close();
 	}
 	
 }
