@@ -6,12 +6,14 @@ import java.security.*;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import org.junit.*;
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
+
 import controller.InvalidDESKeyLengthException;
 import model.*;
 
 public class DESDataDecrypterTest {
 
-	private static final String INPUT_ENCRYPTED_DATA = "2FÈ>0Ghå¢ÚS7À×Š+¢Á‡Ñ";
+	private static final String INPUT_ENCRYPTED_DATA = "MkbIBD4wR2jlotpTN8AT14orGqLBFIfR";
 	private static final String EXPECTED_PLAIN_DATA = "Data to be encrypted";
 	public static final String EIGHT_CHARACTERS_KEY = "abcdefgh";
 	private DESDataDecrypter ddd;
@@ -51,7 +53,7 @@ public class DESDataDecrypterTest {
 		String decryptionResult = null;
 		try {
 			decryptionResult = new String
-					(ddd.decrypt(INPUT_ENCRYPTED_DATA.getBytes(), secretKey));
+					(ddd.decrypt(INPUT_ENCRYPTED_DATA, secretKey));
 		} catch (InvalidKeyException e) {
 			e.printStackTrace();
 			fail("Invalid secret key.");
@@ -61,7 +63,7 @@ public class DESDataDecrypterTest {
 	
 	@Test (expected = InvalidKeyException.class)
 	public void invalidKeyShouldThrowInvalidKeyException() throws InvalidKeyException {
-		ddd.decrypt(INPUT_ENCRYPTED_DATA.getBytes(), invalidDESSecretKey);
+		ddd.decrypt(INPUT_ENCRYPTED_DATA, invalidDESSecretKey);
 	}
 	
 }

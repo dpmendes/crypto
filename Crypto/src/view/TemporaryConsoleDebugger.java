@@ -4,6 +4,8 @@ import java.security.InvalidKeyException;
 
 import javax.crypto.SecretKey;
 
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
+
 import controller.KeyboardInputController;
 import controller.InvalidDESKeyLengthException;
 import model.DESDataDecrypter;
@@ -30,13 +32,12 @@ public class TemporaryConsoleDebugger {
 		SecretKey secretDESKey = 
 				generateDESKeyFromEightCharactersString(eightCharactersEncryptionKey);
 		
-		byte[] encryptedDataBytes = 
-				encryptDataWithSecretKey(dataToBeEncrypted.getBytes(), secretDESKey);
-		System.out.println("Encrypted data: " + new String(encryptedDataBytes));
+		String encryptedData = 
+				encryptDataWithSecretKey(dataToBeEncrypted, secretDESKey);
+		System.out.println("Encrypted data: " + encryptedData);
 		
-		byte[] decryptedDataBytes = decryptDataWithSecretKey
-				(encryptedDataBytes, secretDESKey);
-		System.out.println("Decrypted data: " + new String(decryptedDataBytes));
+		String decryptedData = decryptDataWithSecretKey(encryptedData, secretDESKey);
+		System.out.println("Decrypted data: " + decryptedData);
 	}
 
 	private static String readEncryptionKeyFromKeyboard
@@ -63,28 +64,28 @@ public class TemporaryConsoleDebugger {
 		return secretDESKey;
 	}
 
-	private static byte[] encryptDataWithSecretKey
-	(byte[] dataBytesToBeEncrypted, SecretKey secretDESKey) {
+	private static String encryptDataWithSecretKey
+	(String dataToBeEncrypted, SecretKey secretDESKey) {
 		DESDataEncrypter dde = DESDataEncrypter.getInstance();		
 		
-		byte[] encryptedDataBytes = null;
+		String encryptedData = null;
 		try {
-			encryptedDataBytes = dde.encrypt(dataBytesToBeEncrypted, secretDESKey);
+			encryptedData = dde.encrypt(dataToBeEncrypted, secretDESKey);
 		} catch (InvalidKeyException e) {
 			e.printStackTrace();
 		}
-		return encryptedDataBytes;
+		return encryptedData;
 	}
 	
-	private static byte[] decryptDataWithSecretKey
-	(byte[] encryptedDataBytes, SecretKey secretDESKey) {
-		byte[] decryptedDataBytes = null;
+	private static String decryptDataWithSecretKey
+	(String encryptedData, SecretKey secretDESKey) {
+		String decryptedData = null;
 		DESDataDecrypter ddd = DESDataDecrypter.getInstance();
 		try {
-			decryptedDataBytes = ddd.decrypt(encryptedDataBytes, secretDESKey);
+			decryptedData = ddd.decrypt(encryptedData, secretDESKey);
 		} catch (InvalidKeyException e) {
 			e.printStackTrace();
 		}
-		return decryptedDataBytes;
+		return decryptedData;
 	}
 }

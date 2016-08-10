@@ -3,6 +3,8 @@ package model;
 import java.security.*;
 import javax.crypto.*;
 
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
+
 public class DESDataEncrypter implements DataEncrypter{
 	private static DESDataEncrypter desDataEncrypterInstance = null;
 	
@@ -16,14 +18,17 @@ public class DESDataEncrypter implements DataEncrypter{
 	}
 	
 	@Override
-	public byte[] encrypt(byte[] plainInputBytes, SecretKey secretKey) throws InvalidKeyException {
+	public String encrypt(String plainInput, SecretKey secretKey) throws InvalidKeyException {
 		Cipher cipher = null;
 		cipher = getCipherInstanceWithDESEncryption(cipher);
 		cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 	
+		byte[] plainInputBytes = plainInput.getBytes();
 		byte[] encryptedBytes = encryptInputBytesUsingCipher(plainInputBytes, cipher);
 		
-		return encryptedBytes;
+		char[] encryptedCharArray = Base64Coder.encode(encryptedBytes);
+		String encryptedString = String.valueOf(encryptedCharArray);
+		return encryptedString;
 	}
 
 	private Cipher getCipherInstanceWithDESEncryption(Cipher cipher) {

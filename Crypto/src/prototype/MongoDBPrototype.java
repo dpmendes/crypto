@@ -2,8 +2,8 @@ package prototype;
 
 import org.bson.Document;
 
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.*;
+import com.mongodb.client.*;
 
 public class MongoDBPrototype {
 
@@ -13,7 +13,17 @@ public class MongoDBPrototype {
 		
 		Document dbEntry = new Document();
 		dbEntry = dbEntry.append("name", "Lucas");
-		mdb.getCollection("names").insertOne(dbEntry);
+		MongoCollection<Document> namesCollection = mdb.getCollection("names");
+		namesCollection.insertOne(dbEntry);
+		
+		FindIterable<Document> collectionIterable = namesCollection.find();
+		
+		collectionIterable.forEach(new Block<Document>() {
+			@Override
+			public void apply(final Document document) {
+				System.out.println("\n=======\n" + document + "\n=======\n");
+			}
+		});
 		
 		mongoClient.close();
 	}
