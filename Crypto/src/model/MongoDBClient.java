@@ -30,33 +30,45 @@ public class MongoDBClient {
 	private Document createDocument(EncryptionDataStructure encryptionDataStructure) {
 		Document document = new Document();
 		String header = encryptionDataStructure.header;
+		document.append("header", header);
 		String encryptedData = encryptionDataStructure.encryptedData;
-		document.append(header, encryptedData);
+		document.append("data", encryptedData);
 		return document;
 	}
 	
-	public EncryptionDataStructure findFirstOccurence
-	(EncryptionDataStructure encryptionDataStructure) throws DataNotFoundException {
-		Document searchDocument = createDocument(encryptionDataStructure);
+	private Document createDocumentFromHeader(String header) {
+		Document document = new Document();
+		document.append("header", header);
+		return document;
+	}
+	
+	public EncryptionDataStructure findFirstOccurenceByHeader
+	(String header) throws DataNotFoundException {
+		Document searchDocument = createDocumentFromHeader(header);
 		FindIterable<Document> iterable = cryptoMongoCollection.find(searchDocument);
 		
 		Document searchResult = iterable.first();
 		
 		if(searchResult != null)
 		{
-			String header = encryptionDataStructure.header;
-			String encryptedData = searchResult.getString(header);
+			String encryptedData = searchResult.getString("data");
 			EncryptionDataStructure resultStructure = 
 					new EncryptionDataStructure(encryptedData, header);
 			return resultStructure;			
 		}
 		else
 			throw new DataNotFoundException("There is no data corresponding to " + 
-											"EncryptionDataStructure received.");
+											"the received header.");
 	}
 	
 	public void dropCollection() {
 		cryptoMongoCollection.drop();
+	}
+	
+	public void deleteEncryptedDataFromHeader(String header) throws DataNotFoundException {
+		EncryptionDataStructure eds = findFirstOccurenceByHeader(header);
+		Document document = createDocument(eds);
+		cryptoMongoCollection.deleteOne(document);
 	}
 
 	public void finalize() {
