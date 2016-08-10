@@ -9,7 +9,8 @@ import model.DESKeyGenerator;
 
 public class DESKeyGeneratorTest {
 	
-	private static String fixedKeyDescriptor = "com.sun.crypto.provider.DESKey@181f5";
+	private static final String FIXED_KEY_DESCRIPTOR 
+	= "com.sun.crypto.provider.DESKey@181f5";
 
 	@Test
 	public void generateRandomDESKeyShouldReturnDESKey() {
@@ -33,7 +34,7 @@ public class DESKeyGeneratorTest {
 		} catch (InvalidDESKeyLengthException e) {
 			e.printStackTrace();
 		}
-		assertTrue(desFixedSecretKey.toString().equals(fixedKeyDescriptor));
+		assertTrue(desFixedSecretKey.toString().equals(FIXED_KEY_DESCRIPTOR));
 	}
 	
 	@Test (expected = InvalidDESKeyLengthException.class)

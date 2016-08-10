@@ -10,6 +10,9 @@ public class TemporaryConsoleDebugger {
 	public static void main(String[] args) {
 		KeyboardInputController keyboardInputController = 
 				KeyboardInputController.getInstance();
+
+		System.out.println("Username: ");
+		String username = keyboardInputController.inputGenericData();
 		
 		System.out.println("Type the data to be encrypted: ");
 		String dataToBeEncrypted = keyboardInputController.inputGenericData();
@@ -32,8 +35,9 @@ public class TemporaryConsoleDebugger {
 		System.out.println("Insert header for encrypted data: ");
 		String header = keyboardInputController.inputGenericData();
 		
-		MongoDBClient dbClient = new MongoDBClient();
-		dbClient.insertEncryptedDataWithHeader(encryptedData, header);
+		MongoDBClient dbClient = new MongoDBClient(username);
+		EncryptionDataStructure eds = new EncryptionDataStructure(encryptedData, header);
+		dbClient.insertEncryptedDataWithHeader(eds);
 		
 		String decryptedData = 
 				decryptDataWithSecretKey(encryptedData, secretDESKey);

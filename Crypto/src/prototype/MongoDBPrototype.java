@@ -11,9 +11,9 @@ public class MongoDBPrototype {
 		MongoClient mongoClient = new MongoClient();
 		MongoDatabase mdb = mongoClient.getDatabase("test");
 		
+		MongoCollection<Document> namesCollection = mdb.getCollection("names");
 		Document dbEntry = new Document();
 		dbEntry = dbEntry.append("name", "Lucas");
-		MongoCollection<Document> namesCollection = mdb.getCollection("names");
 		namesCollection.insertOne(dbEntry);
 		
 		FindIterable<Document> collectionIterable = namesCollection.find();
@@ -24,6 +24,8 @@ public class MongoDBPrototype {
 				System.out.println("\n=======\n" + document + "\n=======\n");
 			}
 		});
+		
+		namesCollection.drop();
 		
 		mongoClient.close();
 	}

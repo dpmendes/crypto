@@ -11,7 +11,7 @@ public class DESDataDecrypterTest {
 
 	private static final String INPUT_ENCRYPTED_DATA = "MkbIBD4wR2jlotpTN8AT14orGqLBFIfR";
 	private static final String EXPECTED_PLAIN_DATA = "Data to be encrypted";
-	public static final String EIGHT_CHARACTERS_KEY = "abcdefgh";
+	private static final String EIGHT_CHARACTERS_KEY = "abcdefgh";
 	private DESDataDecrypter ddd;
 	private SecretKey secretKey;
 	private SecretKey invalidDESSecretKey;
