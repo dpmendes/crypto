@@ -5,27 +5,8 @@
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
     version="2.2">
 	<managed-bean>
-		<managed-bean-name>dataToBeEncryptedStructure</managed-bean-name>
-		<managed-bean-class>
-			model.DataToBeEncryptedStructure
-		</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-		<managed-property>
-			<property-name>header</property-name>
-			<property-class>java.lang.String</property-class>
-			<value></value>
-		</managed-property>
-		<managed-property>
-			<property-name>plainData</property-name>
-			<property-class>java.lang.String</property-class>
-			<value>Initialization Value</value>
-		</managed-property>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>desDataEncrypter</managed-bean-name>
-		<managed-bean-class>
-			model.DESDataEncrypter
-		</managed-bean-class>
+		<managed-bean-name>encrypterBean</managed-bean-name>
+		<managed-bean-class>controller.EncrypterBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 </faces-config>
