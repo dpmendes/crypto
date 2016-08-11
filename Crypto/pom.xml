@@ -20,6 +20,17 @@
       	<artifactId>mongodb-driver</artifactId>
       	<version>3.3.0</version>
       </dependency>
+      <dependency>
+		  <groupId>javax.faces</groupId>
+		  <artifactId>javax.faces-api</artifactId>
+		  <scope>provided</scope>
+	  </dependency>
+	  <dependency>
+		  <groupId>javax</groupId>
+		  <artifactId>javaee-api</artifactId>
+		  <version>7.0</version>
+		  <scope>provided</scope>
+	  </dependency>
   </dependencies>
   
   <build>
@@ -45,6 +56,11 @@
           <name>Spring Releases</name>
           <url>https://repo.spring.io/libs-release</url>
       </repository>
+      <repository>
+		  <id>jvnet-nexus-releases</id>
+		  <name>jvnet-nexus-releases</name>
+		  <url>https://maven.java.net/content/repositories/releases/</url>
+	  </repository>
   </repositories>
   <pluginRepositories>
       <pluginRepository>
@@ -54,4 +70,13 @@
       </pluginRepository>
   </pluginRepositories>
   
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>javax.faces</groupId>
+  			<artifactId>javax.faces-api</artifactId>
+  			<version>2.2</version>
+  		</dependency>
+  	</dependencies>
+  </dependencyManagement>
 </project>
