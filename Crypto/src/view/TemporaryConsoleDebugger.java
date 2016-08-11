@@ -1,7 +1,7 @@
 package view;
 
 import java.security.InvalidKeyException;
-import javax.crypto.SecretKey;
+
 import controller.*;
 import model.*;
 
@@ -25,22 +25,19 @@ public class TemporaryConsoleDebugger {
 					readEncryptionKeyFromKeyboard(keyboardInputController);			
 		}
 			
-		SecretKey secretDESKey = 
-				generateDESKeyFromEightCharactersString(eightCharactersEncryptionKey);
-		
 		String encryptedData = 
-				encryptDataWithSecretKey(dataToBeEncrypted, secretDESKey);
+				encryptDataWithSecretKey(dataToBeEncrypted, eightCharactersEncryptionKey);
 		System.out.println("Encrypted data: " + encryptedData);
 		
 		System.out.println("Insert header for encrypted data: ");
 		String header = keyboardInputController.inputGenericData();
 		
 		MongoDBClient dbClient = new MongoDBClient(username);
-		EncryptionDataStructure eds = new EncryptionDataStructure(encryptedData, header);
+		EncryptedDataStructure eds = new EncryptedDataStructure(encryptedData, header);
 		dbClient.insertEncryptedDataWithHeader(eds);
 		
 		String decryptedData = 
-				decryptDataWithSecretKey(encryptedData, secretDESKey);
+				decryptDataWithSecretKey(encryptedData, eightCharactersEncryptionKey);
 		System.out.println("Decrypted data: " + decryptedData);
 	}
 
@@ -55,26 +52,13 @@ public class TemporaryConsoleDebugger {
 		}
 	}
 	
-	private static SecretKey generateDESKeyFromEightCharactersString
-	(String eightCharactersEncryptionKey) {
-		SecretKey secretDESKey = null;
-		try {
-			secretDESKey = DESKeyGenerator.
-					generateDESKeyFromEightCharactersString
-					(eightCharactersEncryptionKey);
-		} catch (InvalidDESKeyLengthException e1) {
-			e1.printStackTrace();
-		}
-		return secretDESKey;
-	}
-
 	private static String encryptDataWithSecretKey
-	(String dataToBeEncrypted, SecretKey secretDESKey) {
+	(String dataToBeEncrypted, String secretDESKeyString) {
 		DESDataEncrypter dde = DESDataEncrypter.getInstance();		
 		
 		String encryptedData = null;
 		try {
-			encryptedData = dde.encrypt(dataToBeEncrypted, secretDESKey);
+			encryptedData = dde.encrypt(dataToBeEncrypted, secretDESKeyString);
 		} catch (InvalidKeyException e) {
 			e.printStackTrace();
 		}
@@ -82,11 +66,11 @@ public class TemporaryConsoleDebugger {
 	}
 	
 	private static String decryptDataWithSecretKey
-	(String encryptedData, SecretKey secretDESKey) {
+	(String encryptedData, String secretDESKeyString) {
 		String decryptedData = null;
 		DESDataDecrypter ddd = DESDataDecrypter.getInstance();
 		try {
-			decryptedData = ddd.decrypt(encryptedData, secretDESKey);
+			decryptedData = ddd.decrypt(encryptedData, secretDESKeyString);
 		} catch (InvalidKeyException e) {
 			e.printStackTrace();
 		}

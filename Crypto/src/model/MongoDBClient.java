@@ -22,12 +22,12 @@ public class MongoDBClient {
 		cryptoMongoCollection = mdb.getCollection(username);
 	}
 	
-	public void insertEncryptedDataWithHeader(EncryptionDataStructure encryptionDataStructure) {
+	public void insertEncryptedDataWithHeader(EncryptedDataStructure encryptionDataStructure) {
 		Document dbEntry = createDocument(encryptionDataStructure);
 		cryptoMongoCollection.insertOne(dbEntry);
 	}
 	
-	private Document createDocument(EncryptionDataStructure encryptionDataStructure) {
+	private Document createDocument(EncryptedDataStructure encryptionDataStructure) {
 		Document document = new Document();
 		String header = encryptionDataStructure.header;
 		document.append("header", header);
@@ -42,7 +42,7 @@ public class MongoDBClient {
 		return document;
 	}
 	
-	public EncryptionDataStructure findFirstOccurenceByHeader
+	public EncryptedDataStructure findFirstOccurenceByHeader
 	(String header) throws DataNotFoundException {
 		Document searchDocument = createDocumentFromHeader(header);
 		FindIterable<Document> iterable = cryptoMongoCollection.find(searchDocument);
@@ -52,8 +52,8 @@ public class MongoDBClient {
 		if(searchResult != null)
 		{
 			String encryptedData = searchResult.getString("data");
-			EncryptionDataStructure resultStructure = 
-					new EncryptionDataStructure(encryptedData, header);
+			EncryptedDataStructure resultStructure = 
+					new EncryptedDataStructure(encryptedData, header);
 			return resultStructure;			
 		}
 		else
@@ -66,7 +66,7 @@ public class MongoDBClient {
 	}
 	
 	public void deleteEncryptedDataFromHeader(String header) throws DataNotFoundException {
-		EncryptionDataStructure eds = findFirstOccurenceByHeader(header);
+		EncryptedDataStructure eds = findFirstOccurenceByHeader(header);
 		Document document = createDocument(eds);
 		cryptoMongoCollection.deleteOne(document);
 	}

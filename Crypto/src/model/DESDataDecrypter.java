@@ -5,6 +5,8 @@ import javax.crypto.*;
 
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
+import controller.InvalidDESKeyLengthException;
+
 public class DESDataDecrypter implements DataDecrypter {
 	
 	private static DESDataDecrypter desDataDecrypterInstance = null;
@@ -19,8 +21,10 @@ public class DESDataDecrypter implements DataDecrypter {
 	}
 
 	@Override
-	public String decrypt(String encryptedInput, SecretKey secretKey)
+	public String decrypt(String encryptedInput, String secretKeyString)
 			throws InvalidKeyException {
+		SecretKey secretKey = generateDESKeyFromEightCharactersString(secretKeyString);
+		
 		Cipher cipher = null;
 		cipher = getCipherInstanceWithDESEncryption(cipher);
 
@@ -38,6 +42,19 @@ public class DESDataDecrypter implements DataDecrypter {
 		}
 		
 		return new String(decryptedDataBytes);
+	}
+	
+	private SecretKey generateDESKeyFromEightCharactersString
+	(String eightCharactersEncryptionKey) {
+		SecretKey secretDESKey = null;
+		try {
+			secretDESKey = DESKeyGenerator.
+					generateDESKeyFromEightCharactersString
+					(eightCharactersEncryptionKey);
+		} catch (InvalidDESKeyLengthException e1) {
+			e1.printStackTrace();
+		}
+		return secretDESKey;
 	}
 
 	private void initializeCipher(SecretKey secretKey, Cipher cipher) 

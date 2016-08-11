@@ -18,11 +18,11 @@ public class MongoDBClientTest {
 	
 	@Test
 	public void insertDataWithHeaderShouldSaveToDB() {
-		EncryptionDataStructure eds = 
-				new EncryptionDataStructure(ENCRYPTED_DATA, HEADER);
+		EncryptedDataStructure eds = 
+				new EncryptedDataStructure(ENCRYPTED_DATA, HEADER);
 		
 		mdc.insertEncryptedDataWithHeader(eds);
-		EncryptionDataStructure result = null;
+		EncryptedDataStructure result = null;
 		
 		try {
 			result = mdc.findFirstOccurenceByHeader(HEADER);
