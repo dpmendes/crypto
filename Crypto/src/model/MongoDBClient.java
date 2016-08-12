@@ -1,7 +1,11 @@
 package model;
 
-import com.mongodb.MongoClient;
+import com.mongodb.*;
 import com.mongodb.client.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bson.Document;
 
 public class MongoDBClient {
@@ -76,7 +80,8 @@ public class MongoDBClient {
 	}
 	
 	private Document findFirstOccurrenceFromDocument(Document searchDocument) {
-		FindIterable<Document> iterable = cryptoMongoCollection.find(searchDocument);
+		FindIterable<Document> iterable = 
+				cryptoMongoCollection.find(searchDocument);
 		Document searchResult = iterable.first();
 		return searchResult;
 	}
@@ -97,6 +102,29 @@ public class MongoDBClient {
 		else
 			throw new DataNotFoundException("There is no data corresponding to " + 
 											"the received username.");
+	}
+	
+	public List<LogStructure> findLogs() {
+		FindIterable<Document> iterable = cryptoMongoCollection.find();
+
+		final List<LogStructure> logStructureList = new ArrayList<LogStructure>();
+		iterable.forEach(new Block<Document>() {
+		    @Override
+		    public void apply(final Document document) {
+		        String time = document.getString("time");
+		        String username = document.getString("username");
+		        String message = document.getString("message");
+		        
+		        LogStructure logResult = new LogStructure();
+		        logResult.logTime = time;
+		        logResult.username = username;
+		        logResult.message = message;
+		        
+		        logStructureList.add(logResult);
+		    }
+		});
+		
+		return logStructureList;
 	}
 	
 	public void dropCollection() {

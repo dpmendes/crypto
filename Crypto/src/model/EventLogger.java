@@ -66,23 +66,36 @@ public class EventLogger {
 	public void logSuccessfulDecryptEvent
 	(String username, DataToBeDecryptedStructure dtbds) {
 		String encryptedData = dtbds.getEncryptedData();
-		String header = dtbds.getHeader();
 		setLogTimeAndUserAndClearMessage(username);
-		log.message = "Submitted \"" + encryptedData + "\" with header \"" +
-				 header + "\" for decryption. Success.";
+		log.message = "Submitted \"" + encryptedData + "\""
+				+ "\" for decryption. Success.";
 		mongoDBClient.insertLog(log);
 	}
 	
-	public void logFailedDecryptEvent
+	public void logInvalidKeyEvent
 	(String username, DataToBeDecryptedStructure dtbds) {
 		String encryptedData = dtbds.getEncryptedData();
-		String header = dtbds.getHeader();
 		setLogTimeAndUserAndClearMessage(username);
-		log.message = "Submitted \"" + encryptedData + "\" with header \"" +
-				 header + "\" for decryption. Failed with invalid key.";
+		log.message = "Submitted \"" + encryptedData + "\""
+				+ "\" for decryption. Failed with invalid key.";
 		mongoDBClient.insertLog(log);
 	}
 	
+	public void logInvalidInputEvent
+	(String username, DataToBeDecryptedStructure dtbds) {
+		String encryptedData = dtbds.getEncryptedData();
+		setLogTimeAndUserAndClearMessage(username);
+		log.message = "Submitted \"" + encryptedData + "\""
+				+ "\" for decryption. Failed with invalid input.";
+		mongoDBClient.insertLog(log);
+	}
+	
+	public void logLogRetrieval(String username) {
+		setLogTimeAndUserAndClearMessage(username);
+		log.message = "Logs retrieved.";
+		mongoDBClient.insertLog(log);
+	}
+
 	public void finalize() {
 		if(mongoDBClient != null)
 		{
@@ -97,4 +110,5 @@ public class EventLogger {
 		String now = dateFormat.format(calendar.getTime());
 		return now;
 	}
+
 }

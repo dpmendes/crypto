@@ -22,7 +22,7 @@ public class DESDataDecrypter implements DataDecrypter {
 
 	@Override
 	public String decrypt(String encryptedInput, String secretKeyString)
-			throws InvalidKeyException {
+			throws InvalidKeyException, IllegalArgumentException {
 		SecretKey secretKey = generateDESKeyFromEightCharactersString(secretKeyString);
 		
 		Cipher cipher = null;
@@ -30,7 +30,16 @@ public class DESDataDecrypter implements DataDecrypter {
 
 		initializeCipher(secretKey, cipher);
 		
-		byte[] encryptedInputBytes = Base64Coder.decode(encryptedInput);
+		byte[] encryptedInputBytes = null; 
+		
+		try{
+			encryptedInputBytes = Base64Coder.decode(encryptedInput);
+		} catch(IllegalArgumentException e) {
+			throw new IllegalArgumentException
+				("Base64 coder input must have a multiple of 4 characters.");
+		}
+				
+		
 		byte[] decryptedDataBytes = null;
 		
 		try {

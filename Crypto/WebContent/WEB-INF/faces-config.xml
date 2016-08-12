@@ -19,6 +19,11 @@
 		<managed-bean-class>controller.DecrypterBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>logBean</managed-bean-name>
+		<managed-bean-class>controller.LogBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
 	
 	<navigation-rule>
 	<from-view-id>home.xhtml</from-view-id>
@@ -74,6 +79,24 @@
 		<from-action>#{loginBean.queryDBAndLogin()}</from-action>
 		<from-outcome>success</from-outcome>
 		<to-view-id>options.xhtml</to-view-id>
+	</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+	<from-view-id>decrypt.xhtml</from-view-id>
+	<navigation-case>
+		<from-action>#{decrypterBean.decrypt()}</from-action>
+		<from-outcome>invalidinput</from-outcome>
+		<to-view-id>decrypt-fail.xhtml</to-view-id>
+	</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+	<from-view-id>decrypt-fail.xhtml</from-view-id>
+	<navigation-case>
+		<from-action>#{decrypterBean.decrypt()}</from-action>
+		<from-outcome>success</from-outcome>
+		<to-view-id>decrypt.xhtml</to-view-id>
 	</navigation-case>
 	</navigation-rule>
 		

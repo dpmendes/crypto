@@ -10,6 +10,16 @@ public class TemporaryConsoleDebugger {
 
 	public static void main(String[] args) {
 
+		LogBean logBean = new LogBean();
+		logBean.setUsername("lucas");
+		logBean.retrieveLogs();
+		
+		for(LogStructure log : logBean.getLogList()) {
+			System.out.println("username: " + log.username + "\n" +
+						"time: " + log.logTime + "\n" + 
+						"message: " + log.message + "\n\n");
+		}
+		
 		Calendar calendar = Calendar.getInstance();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		String now = dateFormat.format(calendar.getTime());

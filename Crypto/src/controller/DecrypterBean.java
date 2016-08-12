@@ -24,8 +24,11 @@ public class DecrypterBean {
 		try {
 			plainData = desDataDecrypter.decrypt(encryptedInput, secretKeyString);
 		} catch (InvalidKeyException e) {
-			eventLogger.logFailedDecryptEvent(username, dtbds);
+			eventLogger.logInvalidKeyEvent(username, dtbds);
 			return "fail";
+		} catch (IllegalArgumentException e) {
+			eventLogger.logInvalidInputEvent(username, dtbds);
+			return "invalidinput";
 		}
 		
 		eventLogger.logSuccessfulDecryptEvent(username, dtbds);
