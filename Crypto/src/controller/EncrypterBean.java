@@ -6,6 +6,36 @@ import model.*;
 
 public class EncrypterBean {
 
+	private MongoDBClient mongoDBClient = null;
+	private DESDataEncrypter desDataEncrypter = null;
+	private String username = null;
+	private String plainInput = null;
+	private String secretKeyString = null;
+	private String header;
+	private String encryptedData;
+	
+	public EncrypterBean() {
+		desDataEncrypter = DESDataEncrypter.getInstance();
+		username = "fromOtherBean";
+		secretKeyString = "abcdefgh";
+		mongoDBClient = new MongoDBClient(username);
+	}
+	
+	public String encryptAndSaveToDb() {
+		try {
+			encryptedData = desDataEncrypter.encrypt(plainInput, secretKeyString);
+		} catch (InvalidKeyException e) {
+			return "fail";
+		}
+		
+		EncryptedDataStructure encryptedDataStructure = 
+				new EncryptedDataStructure(encryptedData, header);
+		
+		mongoDBClient.insertEncryptedDataWithHeader(encryptedDataStructure);
+		
+		return "success";
+	}
+	
 	public MongoDBClient getMongoDBClient() {
 		return mongoDBClient;
 	}
@@ -60,36 +90,6 @@ public class EncrypterBean {
 
 	public void setEncryptedData(String encryptedData) {
 		this.encryptedData = encryptedData;
-	}
-
-	private MongoDBClient mongoDBClient = null;
-	private DESDataEncrypter desDataEncrypter = null;
-	private String username = null;
-	private String plainInput = null;
-	private String secretKeyString = null;
-	private String header;
-	private String encryptedData;
-	
-	public EncrypterBean() {
-		desDataEncrypter = DESDataEncrypter.getInstance();
-		username = "fromOtherBean";
-		secretKeyString = "abcdefgh";
-		mongoDBClient = new MongoDBClient(username);
-	}
-	
-	public String encryptAndSaveToDb() {
-		try {
-			encryptedData = desDataEncrypter.encrypt(plainInput, secretKeyString);
-		} catch (InvalidKeyException e) {
-			return "fail";
-		}
-		
-		EncryptedDataStructure encryptedDataStructure = 
-				new EncryptedDataStructure(encryptedData, header);
-		
-		mongoDBClient.insertEncryptedDataWithHeader(encryptedDataStructure);
-		
-		return "success";
 	}
 	
 }

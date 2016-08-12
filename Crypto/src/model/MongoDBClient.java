@@ -22,6 +22,12 @@ public class MongoDBClient {
 		cryptoMongoCollection = mdb.getCollection(username);
 	}
 	
+	public MongoDBClient(String username, String password) {
+		mongoClient = new MongoClient();
+		MongoDatabase mdb = mongoClient.getDatabase("test");
+		cryptoMongoCollection = mdb.getCollection("login");
+	}
+	
 	public void insertEncryptedDataWithHeader(EncryptedDataStructure encryptionDataStructure) {
 		Document dbEntry = createDocument(encryptionDataStructure);
 		cryptoMongoCollection.insertOne(dbEntry);
@@ -36,18 +42,10 @@ public class MongoDBClient {
 		return document;
 	}
 	
-	private Document createDocumentFromHeader(String header) {
-		Document document = new Document();
-		document.append("header", header);
-		return document;
-	}
-	
 	public EncryptedDataStructure findFirstOccurenceByHeader
 	(String header) throws DataNotFoundException {
-		Document searchDocument = createDocumentFromHeader(header);
-		FindIterable<Document> iterable = cryptoMongoCollection.find(searchDocument);
-		
-		Document searchResult = iterable.first();
+		Document searchDocument = createDocumentFromSingleField("header", header);
+		Document searchResult = findFirstOccurrenceFromDocument(searchDocument);
 		
 		if(searchResult != null)
 		{
@@ -59,6 +57,36 @@ public class MongoDBClient {
 		else
 			throw new DataNotFoundException("There is no data corresponding to " + 
 											"the received header.");
+	}
+	
+	private Document createDocumentFromSingleField(String fieldName, String fieldContent) {
+		Document document = new Document();
+		document.append(fieldName, fieldContent);
+		return document;
+	}
+	
+	private Document findFirstOccurrenceFromDocument(Document searchDocument) {
+		FindIterable<Document> iterable = cryptoMongoCollection.find(searchDocument);
+		Document searchResult = iterable.first();
+		return searchResult;
+	}
+	
+	public UserDataStructure findFirstOccurrenceByUsername
+	(String username) throws DataNotFoundException {
+		Document searchDocument = createDocumentFromSingleField
+				("username", username);
+		Document searchResult = findFirstOccurrenceFromDocument(searchDocument);
+		
+		if(searchResult != null)
+		{
+			String password = searchResult.getString("password");
+			UserDataStructure resultStructure = 
+					new UserDataStructure(username, password);
+			return resultStructure;			
+		}
+		else
+			throw new DataNotFoundException("There is no data corresponding to " + 
+											"the received username.");
 	}
 	
 	public void dropCollection() {
