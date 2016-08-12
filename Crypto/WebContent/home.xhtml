@@ -19,7 +19,7 @@
 			#{encrypterBean.username}
 		</h2>
 		Data to be encrypted:
-		<h:inputText id="encryptedDataInput" value="#{encrypterBean.plainInput}" />
+		<h:inputText id="plainDataInput" value="#{encrypterBean.plainInput}" />
 		<br/>
 		Header:
 		<h:inputText id="headerInput" value="#{encrypterBean.header}" />
@@ -30,6 +30,19 @@
 	
 	Encrypted Data:
 	<h:outputText id="encryptedDataOutput" value="#{encrypterBean.encryptedData}" />
+
+	<h1>
+		Decryption
+	</h1>
+	
+	<h:form>
+		Data to be decrypted: 
+		<h:inputText id="encryptedDataInput" value="#{decrypterBean.encryptedInput}" />
+		<br/>
+		<h:commandButton value="submit" action="#{decrypterBean.decrypt()}" />
+	</h:form>
+	
+	Decrypted data = #{decrypterBean.plainData}
 	
 	<h1>
 		Login
@@ -45,6 +58,8 @@
 		<h:commandButton value="submit" action="#{loginBean.queryDBAndLogin()}">
 			<f:setPropertyActionListener target="#{encrypterBean.username}" value="#{loginBean.username}" />
 			<f:setPropertyActionListener target="#{encrypterBean.secretKeyString}" value="#{loginBean.password}" />
+			<f:setPropertyActionListener target="#{decrypterBean.username}" value="#{loginBean.username}" />
+			<f:setPropertyActionListener target="#{decrypterBean.secretKeyString}" value="#{loginBean.password}" />
 		</h:commandButton>
 	</h:form>
 	<br/>
