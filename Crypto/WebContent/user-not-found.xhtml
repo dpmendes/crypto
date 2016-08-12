@@ -19,6 +19,7 @@
 		Password:
 		<h:inputSecret id="password" value="#{loginBean.password}" maxlength="8">
 			<f:validateLength minimum="8" />
+		(Must be exactly 8 characters long)
 		</h:inputSecret> 
 		<br/>
 		<h:commandButton value="submit" action="#{loginBean.queryDBAndLogin()}">
