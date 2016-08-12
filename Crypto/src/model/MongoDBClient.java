@@ -20,18 +20,24 @@ public class MongoDBClient {
 		cryptoMongoCollection = mdb.getCollection(collection);
 	}
 	
-	public void insertEncryptedDataWithHeader(EncryptedDataStructure encryptionDataStructure) {
-		Document dbEntry = createDocument(encryptionDataStructure);
+	public void insertEncryptedDataWithHeader
+	(EncryptedDataStructure encryptionDataStructure) {
+		Document dbEntry = createDocumentforEncryptedDataEntry(encryptionDataStructure);
 		cryptoMongoCollection.insertOne(dbEntry);
 	}
 	
-	private Document createDocument(EncryptedDataStructure encryptionDataStructure) {
+	private Document createDocumentforEncryptedDataEntry
+	(EncryptedDataStructure encryptionDataStructure) {
 		Document document = new Document();
 		String header = encryptionDataStructure.header;
 		document.append("header", header);
 		String encryptedData = encryptionDataStructure.encryptedData;
 		document.append("data", encryptedData);
 		return document;
+	}
+	
+	public void insertLog(LogStructure log) {
+		
 	}
 	
 	public EncryptedDataStructure findFirstOccurenceByHeader
@@ -87,7 +93,7 @@ public class MongoDBClient {
 	
 	public void deleteEncryptedDataFromHeader(String header) throws DataNotFoundException {
 		EncryptedDataStructure eds = findFirstOccurenceByHeader(header);
-		Document document = createDocument(eds);
+		Document document = createDocumentforEncryptedDataEntry(eds);
 		cryptoMongoCollection.deleteOne(document);
 	}
 

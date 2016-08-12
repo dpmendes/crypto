@@ -1,13 +1,20 @@
 package view;
 
 import java.security.InvalidKeyException;
-
+import java.text.*;
+import java.util.Calendar;
 import controller.*;
 import model.*;
 
 public class TemporaryConsoleDebugger {
 
 	public static void main(String[] args) {
+
+		Calendar calendar = Calendar.getInstance();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		String now = dateFormat.format(calendar.getTime());
+		System.out.println(now);
+		
 		KeyboardInputController keyboardInputController = 
 				KeyboardInputController.getInstance();
 

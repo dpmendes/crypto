@@ -13,22 +13,25 @@ public class LoginBean {
 	
 	public String queryDBAndLogin() {
 		mongoDBClient = new MongoDBClient("login");
-		// logger!
+		EventLogger eventLogger = EventLogger.getInstance();
 		UserDataStructure userDataStructure = null;
 		try {
 			userDataStructure = mongoDBClient.findFirstOccurrenceByUsername(username);
 		} catch (DataNotFoundException e) {
 			closeAndFreeMongoDBClient();
+			eventLogger.logNoSuchUserLoginEvent(username);
 			return "nousername";
 		}
 		
 		if(userDataStructure.password.equals(password))
 		{
 			closeAndFreeMongoDBClient();
+			eventLogger.logSuccessfulLoginEvent(username);
 			return "success";
 		}
 		
 		closeAndFreeMongoDBClient();
+		eventLogger.logWrongPasswordLoginEvent(username);
 		return "invalidpassword";
 	}
 
