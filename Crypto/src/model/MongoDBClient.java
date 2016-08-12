@@ -1,9 +1,7 @@
 package model;
 
 import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
 import org.bson.Document;
 
 public class MongoDBClient {
@@ -16,16 +14,10 @@ public class MongoDBClient {
 		("Use new MongoDBClient(username) constructor.");
 	}
 	
-	public MongoDBClient(String username) {
+	public MongoDBClient(String collection) {
 		mongoClient = new MongoClient();
 		MongoDatabase mdb = mongoClient.getDatabase("test");
-		cryptoMongoCollection = mdb.getCollection(username);
-	}
-	
-	public MongoDBClient(String username, String password) {
-		mongoClient = new MongoClient();
-		MongoDatabase mdb = mongoClient.getDatabase("test");
-		cryptoMongoCollection = mdb.getCollection("login");
+		cryptoMongoCollection = mdb.getCollection(collection);
 	}
 	
 	public void insertEncryptedDataWithHeader(EncryptedDataStructure encryptionDataStructure) {
@@ -99,8 +91,13 @@ public class MongoDBClient {
 		cryptoMongoCollection.deleteOne(document);
 	}
 
-	public void finalize() {
+	public void close() {
 		mongoClient.close();
+	}
+	
+	public void finalize() {
+		if(mongoClient != null)
+			mongoClient.close();
 	}
 	
 }

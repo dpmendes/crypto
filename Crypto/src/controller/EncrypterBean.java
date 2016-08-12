@@ -18,10 +18,11 @@ public class EncrypterBean {
 		desDataEncrypter = DESDataEncrypter.getInstance();
 		username = "fromOtherBean";
 		secretKeyString = "abcdefgh";
-		mongoDBClient = new MongoDBClient(username);
 	}
 	
 	public String encryptAndSaveToDb() {
+		mongoDBClient = new MongoDBClient(username);
+		// logger!
 		try {
 			encryptedData = desDataEncrypter.encrypt(plainInput, secretKeyString);
 		} catch (InvalidKeyException e) {
@@ -32,6 +33,8 @@ public class EncrypterBean {
 				new EncryptedDataStructure(encryptedData, header);
 		
 		mongoDBClient.insertEncryptedDataWithHeader(encryptedDataStructure);
+		mongoDBClient.close();
+		mongoDBClient = null;
 		
 		return "success";
 	}

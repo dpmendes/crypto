@@ -15,6 +15,9 @@
 	</h1>
 	
 	<h:form>
+		<h2>
+			#{encrypterBean.username}
+		</h2>
 		Data to be encrypted:
 		<h:inputText id="encryptedDataInput" value="#{encrypterBean.plainInput}" />
 		<br/>
@@ -39,7 +42,10 @@
 		Password:
 		<h:inputSecret id="password" value="#{loginBean.password}" />
 		<br/>
-		<h:commandButton value="submit" action="#{loginBean.queryDBAndLogin()}" />
+		<h:commandButton value="submit" action="#{loginBean.queryDBAndLogin()}">
+			<f:setPropertyActionListener target="#{encrypterBean.username}" value="#{loginBean.username}" />
+			<f:setPropertyActionListener target="#{encrypterBean.secretKeyString}" value="#{loginBean.password}" />
+		</h:commandButton>
 	</h:form>
 	<br/>
 	Login Result = #{loginBean.queryDBAndLogin()}
