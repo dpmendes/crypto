@@ -19,4 +19,62 @@
 		<managed-bean-class>controller.DecrypterBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+	
+	<navigation-rule>
+	<from-view-id>home.xhtml</from-view-id>
+	<navigation-case>
+		<from-action>#{loginBean.queryDBAndLogin()}</from-action>
+		<from-outcome>nousername</from-outcome>
+		<to-view-id>user-not-found.xhtml</to-view-id>
+	</navigation-case>
+		<navigation-case>
+		<from-action>#{loginBean.queryDBAndLogin()}</from-action>
+		<from-outcome>invalidpassword</from-outcome>
+		<to-view-id>invalid-password.xhtml</to-view-id>
+	</navigation-case>
+	<navigation-case>
+		<from-action>#{loginBean.queryDBAndLogin()}</from-action>
+		<from-outcome>success</from-outcome>
+		<to-view-id>options.xhtml</to-view-id>
+	</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+	<from-view-id>user-not-found.xhtml</from-view-id>
+	<navigation-case>
+		<from-action>#{loginBean.queryDBAndLogin()}</from-action>
+		<from-outcome>nousername</from-outcome>
+		<to-view-id>user-not-found.xhtml</to-view-id>
+	</navigation-case>
+		<navigation-case>
+		<from-action>#{loginBean.queryDBAndLogin()}</from-action>
+		<from-outcome>invalidpassword</from-outcome>
+		<to-view-id>invalid-password.xhtml</to-view-id>
+	</navigation-case>
+	<navigation-case>
+		<from-action>#{loginBean.queryDBAndLogin()}</from-action>
+		<from-outcome>success</from-outcome>
+		<to-view-id>options.xhtml</to-view-id>
+	</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+	<from-view-id>invalid-password.xhtml</from-view-id>
+	<navigation-case>
+		<from-action>#{loginBean.queryDBAndLogin()}</from-action>
+		<from-outcome>nousername</from-outcome>
+		<to-view-id>user-not-found.xhtml</to-view-id>
+	</navigation-case>
+		<navigation-case>
+		<from-action>#{loginBean.queryDBAndLogin()}</from-action>
+		<from-outcome>invalidpassword</from-outcome>
+		<to-view-id>invalid-password.xhtml</to-view-id>
+	</navigation-case>
+	<navigation-case>
+		<from-action>#{loginBean.queryDBAndLogin()}</from-action>
+		<from-outcome>success</from-outcome>
+		<to-view-id>options.xhtml</to-view-id>
+	</navigation-case>
+	</navigation-rule>
+		
 </faces-config>

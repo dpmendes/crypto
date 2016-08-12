@@ -7,9 +7,43 @@
 >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>Crypto Login</title>
+<title>Encryption Page</title>
 </head>
 <body>
+	<h1>
+		Please, enter the data to be encrypted and a header
+	</h1>
+	
+	<h:form>
+		<h2>
+			#{encrypterBean.username}
+		</h2>
+		Data to be encrypted:
+		<h:inputText id="plainDataInput" value="#{encrypterBean.plainInput}" />
+		<br/>
+		Header:
+		<h:inputText id="headerInput" value="#{encrypterBean.header}" />
+		<br/>
+		<h:commandButton value="submit" action="#{encrypterBean.encryptAndSaveToDb()}" />
+	</h:form>
+	<br/>
+	
+	Encrypted Data:
+	<h:outputText id="encryptedDataOutput" value="#{encrypterBean.encryptedData}" />
+
+	<h1>
+		Decryption
+	</h1>
+	
+	<h:form>
+		Data to be decrypted: 
+		<h:inputText id="encryptedDataInput" value="#{decrypterBean.encryptedInput}" />
+		<br/>
+		<h:commandButton value="submit" action="#{decrypterBean.decrypt()}" />
+	</h:form>
+	
+	Decrypted data = #{decrypterBean.plainData}
+	
 	<h1>
 		Login
 	</h1>
@@ -29,5 +63,7 @@
 		</h:commandButton>
 	</h:form>
 	<br/>
+	Login Result = #{loginBean.queryDBAndLogin()}
+
 </body>
 </html>
