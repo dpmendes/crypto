@@ -37,7 +37,19 @@ public class MongoDBClient {
 	}
 	
 	public void insertLog(LogStructure log) {
-		
+		Document dbEntry = createDocumentForLogEntry(log);
+		cryptoMongoCollection.insertOne(dbEntry);
+	}
+	
+	private Document createDocumentForLogEntry(LogStructure log) {
+		Document document = new Document();
+		String time = log.logTime;
+		document.append("time", time);
+		String username = log.username;
+		document.append("username", username);
+		String message = log.message;
+		document.append("message", message);
+		return document;
 	}
 	
 	public EncryptedDataStructure findFirstOccurenceByHeader

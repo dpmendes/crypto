@@ -22,10 +22,14 @@ public class EncrypterBean {
 	
 	public String encryptAndSaveToDb() {
 		mongoDBClient = new MongoDBClient(username);
-		// logger!
+		EventLogger eventLogger = EventLogger.getInstance();
+		DataToBeEncryptedStructure dataToBeEncryptedStructure = 
+				new DataToBeEncryptedStructure(plainInput, header);
 		try {
 			encryptedData = desDataEncrypter.encrypt(plainInput, secretKeyString);
 		} catch (InvalidKeyException e) {
+			eventLogger.logFailedEncryptEvent(username, 
+					dataToBeEncryptedStructure);
 			return "fail";
 		}
 		
@@ -35,6 +39,8 @@ public class EncrypterBean {
 		mongoDBClient.insertEncryptedDataWithHeader(encryptedDataStructure);
 		mongoDBClient.close();
 		mongoDBClient = null;
+		
+		eventLogger.logSuccessfulEncryptEvent(username, dataToBeEncryptedStructure);
 		
 		return "success";
 	}

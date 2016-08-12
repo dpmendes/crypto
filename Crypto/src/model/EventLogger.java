@@ -43,9 +43,24 @@ public class EventLogger {
 		mongoDBClient.insertLog(log);
 	}
 	
-	public void logEncryptEvent
+	public void logSuccessfulEncryptEvent
 	(String username, DataToBeEncryptedStructure dtbes) {
-		
+		String plainData = dtbes.getPlainData();
+		String header = dtbes.getHeader();
+		setLogTimeAndUserAndClearMessage(username);
+		log.message = "Submitted \"" + plainData + "\" with header \"" +
+				 header + "\" for encryption. Success.";
+		mongoDBClient.insertLog(log);
+	}
+	
+	public void logFailedEncryptEvent
+	(String username, DataToBeEncryptedStructure dtbes) {
+		String plainData = dtbes.getPlainData();
+		String header = dtbes.getHeader();
+		setLogTimeAndUserAndClearMessage(username);
+		log.message = "Submitted \"" + plainData + "\" with header \"" +
+				 header + "\" for encryption. Failed with invalid key.";
+		mongoDBClient.insertLog(log);
 	}
 	
 	public void logDecryptEvent
