@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 import javax.crypto.*;
 import org.junit.*;
 
-import controller.InvalidDESKeyLengthException;
 import model.DESKeyGenerator;
+import model.InvalidDESKeyLengthException;
 
 public class DESKeyGeneratorTest {
 	

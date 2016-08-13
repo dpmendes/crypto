@@ -1,4 +1,4 @@
-package controller;
+package model;
 
 public class InvalidDESKeyLengthException extends Exception {
 	private static final long serialVersionUID = -4263405485453469290L;

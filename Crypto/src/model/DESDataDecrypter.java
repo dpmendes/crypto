@@ -5,8 +5,6 @@ import javax.crypto.*;
 
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
-import controller.InvalidDESKeyLengthException;
-
 public class DESDataDecrypter implements DataDecrypter {
 	
 	private static DESDataDecrypter desDataDecrypterInstance = null;

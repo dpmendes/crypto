@@ -4,7 +4,6 @@ import java.security.*;
 import java.security.spec.*;
 import javax.crypto.*;
 import javax.crypto.spec.*;
-import controller.InvalidDESKeyLengthException;
 
 public class DESKeyGenerator {
 	public static SecretKey generateRandomDESKey() {
